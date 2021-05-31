@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: nextjs-pipeline
     app.kubernetes.io/name: nextjs-pipeline
   name: nextjs-service
-  namespace: git-ops-minnie
+  namespace: nextjs-minnie
 spec:
   ports:
   - name: http
@@ -34,7 +34,7 @@ metadata:
     app.kubernetes.io/name: nextjs-pipeline
     app.openshift.io/runtime: js
   name: nextjs-deployment
-  namespace: git-ops-minnie
+  namespace: nextjs-minnie
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -58,7 +58,7 @@ spec:
         - name: PROTOCOLS
         - name: LOG_LEVEL
           value: debug
-        image: quay.io/minnie0531/nextjs:af0e5c426720eff2d71658157a49eb57f2cd0960
+        image: quay.io/minnie0531/nextjs:c9e816c289cd446b5ad14090b83ca0d18714cde3
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -100,7 +100,7 @@ metadata:
     nextjs-pipeline: "true"
     openshift.io/host.generated: "true"
   name: nextjs-route
-  namespace: git-ops-minnie
+  namespace: nextjs-minnie
 spec:
   tls:
     termination: edge
