@@ -58,7 +58,7 @@ spec:
         - name: PROTOCOLS
         - name: LOG_LEVEL
           value: debug
-        image: quay.io/kisjang/react-next-app
+        image: quay.io/kisjang/react-next-app:3f0bdcd217299cca810d51918b0bceb06fda2af1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
