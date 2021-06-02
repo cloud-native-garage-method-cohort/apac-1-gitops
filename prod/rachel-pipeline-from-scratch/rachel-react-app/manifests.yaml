@@ -57,7 +57,7 @@ spec:
         - name: PROTOCOLS
         - name: LOG_LEVEL
           value: debug
-        image: quay.io/rachel_chua_ibm/cloud-native-bootcamp-app:ddc72bd6aaf8adfef46f9168664d6f44cba1a55e
+        image: quay.io/rachel_chua_ibm/cloud-native-bootcamp-app:7e44d7a1b0aacecf9e5b570c000a1123a4b37cf6
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
