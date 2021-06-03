@@ -6,7 +6,6 @@ metadata:
   labels:
     app.kubernetes.io/name: adam-express-project
   name: adam-express-service
-  namespace: adam-express-project
 spec:
   ports:
   - name: http
@@ -26,7 +25,6 @@ metadata:
   labels:
     app.kubernetes.io/name: adam-express-project
   name: adam-express-deployment
-  namespace: adam-express-project
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -48,7 +46,7 @@ spec:
         - name: PROTOCOLS
         - name: LOG_LEVEL
           value: debug
-        image: quay.io/adam_slomoi/express-app:39511efd0a1f9cb4794019fae7c317f24af14e6c
+        image: quay.io/adam_slomoi/express-app:4d761087537bd68e1a32f28927c1d474e7825574
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -79,7 +77,6 @@ metadata:
     enzo: "true"
     openshift.io/host.generated: "true"
   name: adam-express-route
-  namespace: adam-express-project
 spec:
   tls:
     termination: edge
