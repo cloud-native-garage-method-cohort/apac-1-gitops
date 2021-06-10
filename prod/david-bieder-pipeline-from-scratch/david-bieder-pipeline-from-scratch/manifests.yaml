@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    enzo: "true"
+  labels:
+    app: david-bieder-pipeline-from-scratch-app
+    app.kubernetes.io/instance: david-bieder-pipeline-from-scratch-app
+    app.kubernetes.io/name: david-bieder-pipeline-from-scratch-app
+  name: david-bieder-pipeline-from-scratch-app
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app.kubernetes.io/instance: david-bieder-pipeline-from-scratch-app
+    app.kubernetes.io/name: david-bieder-pipeline-from-scratch-app
+  sessionAffinity: None
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: f7580aa1eb6f7176705176e201ecff4de93edafb
+    app.openshift.io/vcs-uri: https://github.com/upslopeio/express-sample-app
+    enzo: "true"
+  labels:
+    app: david-bieder-pipeline-from-scratch-app
+    app.kubernetes.io/instance: david-bieder-pipeline-from-scratch-app
+    app.kubernetes.io/name: david-bieder-pipeline-from-scratch-app
+    app.openshift.io/runtime: js
+  name: david-bieder-pipeline-from-scratch-app
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: david-bieder-pipeline-from-scratch-app
+      app.kubernetes.io/name: david-bieder-pipeline-from-scratch-app
+  template:
+    metadata:
+      annotations:
+        enzo: "true"
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: david-bieder-pipeline-from-scratch-app
+        app.kubernetes.io/name: david-bieder-pipeline-from-scratch-app
+    spec:
+      containers:
+      - env:
+        - name: INGRESS_HOST
+        - name: PROTOCOLS
+        - name: LOG_LEVEL
+          value: debug
+        image: quay.io/davidbieder/test-container-image-repo:949bbe022aa3f7a8b6008bc75c86cadf8c276514
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 3000
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: david-bieder-pipeline-from-scratch-app
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: http
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: quay-io-david-bieder-test-cd-password
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Validate=false
+    enzo: "true"
+    openshift.io/host.generated: "true"
+  name: db-pfs-route
+spec:
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: david-bieder-pipeline-from-scratch-app
+    weight: 100
+  wildcardPolicy: None
